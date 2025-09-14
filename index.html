@@ -88,16 +88,10 @@ function updateUI(data) {
 			document.getElementById("HoaLuoiHomNay").innerText =  data.HoaLuoiHomNay + "kWh";
 			document.getElementById("SoHomNay").innerText =  data.SoHomNay + "kWh";
 			document.getElementById("CongSuatHoatDong").innerText = data.CongSuatHoatDong + "W";
-			document.getElementById("CongSuatNhaDung").innerText = data.CongSuatNhaDung + "W";
 			document.getElementById("DienAp").innerText = data.DienAp + "V";
 			document.getElementById("DongDien").innerText = data.DongDien + "A";
 			document.getElementById("TongHoaLuoi").innerText = data.TongHoaLuoi + "kWh";
 			document.getElementById("SuDungThangNay").innerText = data.SuDungThangNay + "kWh";
-			document.getElementById("DayLuoiHomNay").innerText = data.DayLuoiHomNay+ "kWh";
-			document.getElementById("DayLuoiThangNay").innerText = data.DayLuoiThangNay + "kWh";
-			document.getElementById("DayLuoiThangTruoc").innerText = data.DayLuoiThangTruoc + "kWh";
-			document.getElementById("DayLuoiHomTruoc").innerText = data.DayLuoiHomTruoc;
-			document.getElementById("TongDayLuoi").innerText = data.TongDayLuoi+ "kWh";
 			if (data.SuDungThangNay <= 50) {
 			document.getElementById("Bac").innerText = "1: 1984";
 			}
@@ -138,8 +132,6 @@ function updateUI(data) {
 			TongTienDienGiamDuoc: "100000000",
 			Bac: "Bậc1: 1984",
 			SoHomQua: "20",
-			DayLuoiHomTruoc: "1",
-			DayLuoiThangTruoc: "1",
 };
 
       function scaleToFit() {
@@ -279,11 +271,6 @@ function updateUI(data) {
                 <td>kWh</td>
               </tr>
               <tr>
-                <td>ĐL Hôm Qua</td>
-                <td id="DayLuoiHomTruoc">-</td>
-                <td>kWh</td>
-              </tr>
-              <tr>
                 <td>Sử Dụng Tháng Trước</td>
                 <td id="SuDungThangTruoc">-</td>
                 <td>kWh</td>
@@ -294,19 +281,9 @@ function updateUI(data) {
                 <td>kWh</td>
               </tr>
               <tr>
-                <td>ĐL Tháng Trước</td>
-                <td id="DayLuoiThangTruoc">-</td>
-                <td>kWh</td>
-              </tr>
-              <tr>
                 <td>Tiền Điện Tháng Trước</td>
                 <td id="TienDienThangTruoc">-</td>
                 <td>vnđ</td>
-              </tr>
-              <tr>
-                <td>Tổng ĐL</td>
-                <td id="TongDayLuoi">-</td>
-                <td>kWh</td>
               </tr>
               <tr>
                 <td>Tổng Tiền Điện Giảm Được</td>
@@ -336,16 +313,12 @@ function updateUI(data) {
 
         <div class="home-color absolute -top-[50px] -right-[203px] flex h-[200px] items-center justify-between" style="padding-right: 10px;">
           <div>
-            <p class="text-left text-[9px]">Công Suất Đang Dùng</p>
-            <p class="solar-color home-color w-[80px] rounded-sm border-[1px] border-[#ff7b00] py-1 text-center font-bold" style="width: 80px;"><span id="CongSuatNhaDung">- W</span></p>
             <p class="text-left text-[9px]">Tốc Độ Đốt Tiền</p>
             <p class="solar-color home-color w-[80px] rounded-sm border-[1px] border-[#ff7b00] py-1 text-center font-bold" style="width: 80px;"><span id="TocDoDotTien">- vnđ</span></p>
           </div>
           <div class="relative flex flex-col items-center justify-center gap-1">
             <p class="text-left text-[9px]">Sử Dụng Hôm Nay</p>
             <p class="text-left font-bold" id="SoHomNay"></p>
-            <p class="text-left text-[9px]">ĐL Hôm Nay</p>
-            <p class="text-left font-bold" id="DayLuoiHomNay"></p>
             <div class="relative my-4 flex items-center justify-between">
               <svg id="essen" viewBox="0 0 24 24" x="402" y="177.5" width="79" height="79">
                 <defs>
@@ -363,8 +336,6 @@ function updateUI(data) {
             </div>
             <p class="text-left text-[9px]">Sử Dụng Tháng Này</p>
             <p class="text-left font-bold" id="SuDungThangNay"></p>
-            <p class="text-left text-[9px]">ĐL Tháng Này</p>
-            <p class="text-left font-bold" id="DayLuoiThangNay"></p>
           </div>
         </div>
 
