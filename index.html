@@ -52,6 +52,7 @@
       firebase.initializeApp(firebaseConfig);
 
 	  var phatHienStatus = false;
+	  var relayStatus = false;
 
     firebase.database().ref("/esp8266/DuLieu").on("value", function(snapshot) {
       var data = snapshot.val();
@@ -67,6 +68,26 @@
         document.getElementById("TrangThaiPhatHien").innerText = phatHienStatus ? "Cảm biến: bật" : "Cảm biến: tắt";
       }
     });
+	
+	firebase.database().ref("/esp8266/Relay").on("value", function(snapshot) {
+      var relay = snapshot.val();
+      if (relay && typeof relay.RelayisRunning !== 'undefined') {
+        relayStatus = relay.RelayisRunning;
+        document.getElementById("TrangThaiRelay").innerText = relayStatus ? "Đang Hòa Lưới: tắt" : "Đang Hòa Lưới: bật";
+      }
+    });
+	
+	function TrangThaiRelay() {
+      relayStatus = !relayStatus;
+      var updates = { RelayisRunning: relayStatus };
+      firebase.database().ref("/esp8266/Relay").update(updates)
+        .then(() => {
+          console.log("Trạng thái Cảm biến đã được cập nhật:", phatHienStatus);
+        })
+        .catch((error) => {
+          console.error("Lỗi khi cập nhật trạng thái:", error);
+        });
+    }
 	
 	function TrangThaiPhatHien() {
       phatHienStatus = !phatHienStatus;
@@ -188,7 +209,7 @@ function updateUI(data) {
             </svg>
             <div class="flex flex-col items-center">
               <p class="solar-color text-xl font-bold" id="CongSuatHoaLuoi">.</p>
-              <p class="solar-color text-[9px]">Đang Hòa Lưới</p>
+              <button style="color:green" class="text-left text-[9px]" id="TrangThaiRelay" onclick="TrangThaiRelay()">Đang Hòa Lưới: bật</button>
             </div>
             <span style="color:green"><a href="https://hoangminhhp234.github.io/quoctuan/vuongchart.html">Biểu Đồ📉</a></span>
             <button style="color:green" class="text-left text-[9px]" id="TrangThaiPhatHien" onclick="TrangThaiPhatHien()">Cảm biến: tắt</button>
