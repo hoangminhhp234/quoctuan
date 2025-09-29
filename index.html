@@ -131,6 +131,7 @@ function updateUI(data) {
 			if (data.SuDungThangNay > 400){
 			document.getElementById("Bac").innerText = "6: 3460";
 			}
+			document.getElementById("TongSoDienImport").innerText = data.TongSoDienImport + "kWh";
 			document.getElementById("TienDienThangNay").innerText = data.TienDienThangNay + "vnđ";
 			document.getElementById("HoaLuoiHomQua").innerText = data.HoaLuoiHomQua;
 			document.getElementById("SoHomQua").innerText = data.SoHomQua;
@@ -153,6 +154,7 @@ function updateUI(data) {
 			TongTienDienGiamDuoc: "100000000",
 			Bac: "Bậc1: 1984",
 			SoHomQua: "20",
+			TongSoDienImport: "1000",
 };
 
       function scaleToFit() {
@@ -310,6 +312,11 @@ function updateUI(data) {
                 <td>Tổng Tiền Điện Giảm Được</td>
                 <td id="TongTienDienGiamDuoc">-</td>
                 <td>vnđ</td>
+              </tr>
+			  <tr>
+                <td>Tổng Số Điện Đã Tiêu Thụ</td>
+                <td id="TongSoDienImport">-</td>
+                <td>kWh</td>
               </tr>
             </tbody>
           </table>
