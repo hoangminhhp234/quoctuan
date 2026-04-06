@@ -1,0 +1,448 @@
+{
+  "id": "root",
+  "name": "Cụ Tổ",
+  "info": "",
+  "spouses": [],
+  "children": [
+    {
+      "id": "id_1775443983769",
+      "name": "Nguyễn Văn Toản",
+      "info": "",
+      "spouses": [],
+      "children": [
+        {
+          "id": "id_1775444054000",
+          "name": "Hoàng Thị Bé",
+          "info": "m1996",
+          "spouses": [
+            {
+              "name": "Nguyễn Văn Thái (m1986)"
+            }
+          ],
+          "children": [
+            {
+              "id": "id_1775444196144",
+              "name": "Nguyễn Thị Hạnh",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Bùi Văn Định"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775444421452",
+                  "name": "Bùi Thị Phượng",
+                  "info": "",
+                  "spouses": [
+                    {
+                      "name": "Nguyễn Văn Sinh"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775444852298",
+                      "name": "Nguyễn Văn Trung",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "id_1775444457107",
+                  "name": "Bùi Huy Hoàng",
+                  "info": "",
+                  "spouses": [
+                    {
+                      "name": "Nguyễn Thị Thủy"
+                    },
+                    {
+                      "name": "Nguyễn Thị Huế"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775444499234",
+                      "name": "Bùi Huy Hiệp (Thủy)",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775444656783",
+                      "name": "Bùi Thị Minh (Thủy)",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775444688772",
+                      "name": "Bùi Huy.... (Huế)",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "id_1775447689436",
+                  "name": "Bùi Minh Trí",
+                  "info": "1984",
+                  "spouses": [
+                    {
+                      "name": "Nguyễn Thị Trang"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775447719364",
+                      "name": "Người mới",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775447721140",
+                      "name": "Người mới",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "id_1775444225316",
+              "name": "Nguyễn Văn Cường",
+              "info": "1958 - 2004",
+              "spouses": [],
+              "children": []
+            },
+            {
+              "id": "id_1775444284377",
+              "name": "Nguyễn Thị Kiểm",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Nguyễn Văn Tuấn"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775444893792",
+                  "name": "Nguyễn Thị Ngọc",
+                  "info": "sn1986",
+                  "spouses": [
+                    {
+                      "name": "Nguyễn Văn Khoa"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775444946017",
+                      "name": "Người mới",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775446658431",
+                      "name": "Người mới",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "id_1775444907992",
+                  "name": "Nguyễn Thị Phương",
+                  "info": "sn1996",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "id_1775444341451",
+              "name": "Nguyễn Văn Thịnh",
+              "info": "1963 - 1992",
+              "spouses": [
+                {
+                  "name": "Hoàng Thị Soi (sn1960)"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775444996988",
+                  "name": "Nguyễn Văn Hưng",
+                  "info": "1987",
+                  "spouses": [
+                    {
+                      "name": "Bùi Thị Bích Thủy (sn1988)"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775445039968",
+                      "name": "Mina",
+                      "info": "sn2018",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775445066927",
+                      "name": "MinChi",
+                      "info": "sn2020",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775445080175",
+                      "name": "MinU",
+                      "info": "sn2025",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "id_1775445093279",
+                  "name": "Nguyễn Thị Thoa",
+                  "info": "1989 - 2007",
+                  "spouses": [],
+                  "children": []
+                },
+                {
+                  "id": "id_1775445120892",
+                  "name": "Nguyễn Thị Thảo",
+                  "info": "1989",
+                  "spouses": [
+                    {
+                      "name": "Đặng Vũ Vượng"
+                    },
+                    {
+                      "name": "Lim Kwang Seok"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775445168166",
+                      "name": "Đặng Vũ Khánh Vinh (Vượng)",
+                      "info": "sn2016",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775446668671",
+                      "name": "Lim Mi So (Seok)",
+                      "info": "sn2023",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775446670336",
+                      "name": "Lim Ha Yun (Seok)",
+                      "info": "sn2025",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "id": "id_1775445343775",
+                  "name": "Nguyễn Văn Vượng",
+                  "info": "sn1991",
+                  "spouses": [
+                    {
+                      "name": "Phạm Ngọc Hân (sn1991)"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "id": "id_1775445366813",
+                      "name": "Nguyễn Phạm Bảo Khang",
+                      "info": "sn2021",
+                      "spouses": [],
+                      "children": []
+                    },
+                    {
+                      "id": "id_1775445379544",
+                      "name": "Nguyễn Hoàng Minh",
+                      "info": "sn2023",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "id_1775448453243",
+              "name": "Nguyễn Thị Điệp",
+              "info": "",
+              "spouses": [],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "id_1775444094906",
+          "name": "Hoàng Văn Phi",
+          "info": "",
+          "spouses": [
+            {
+              "name": "bà Phi"
+            }
+          ],
+          "children": [
+            {
+              "id": "id_1775445510897",
+              "name": "Hoàng Thị Yến",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Nguyễn Văn Hùng"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775445571022",
+                  "name": "Nguyễn Minh Trang",
+                  "info": "",
+                  "spouses": [
+                    {
+                      "name": "Công Thành"
+                    }
+                  ],
+                  "children": []
+                },
+                {
+                  "id": "id_1775445618410",
+                  "name": "Hoàng Văn Trung",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "id_1775445544647",
+              "name": "Hoàng Thị Hường",
+              "info": "",
+              "spouses": [],
+              "children": [
+                {
+                  "id": "id_1775445556597",
+                  "name": "Thắng",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "id_1775444155159",
+          "name": "Hoàng Văn Thủy",
+          "info": "",
+          "spouses": [
+            {
+              "name": "bà Thủy"
+            }
+          ],
+          "children": [
+            {
+              "id": "id_1775445667531",
+              "name": "Hoàng Thị Nguyệt",
+              "info": "",
+              "spouses": [],
+              "children": []
+            },
+            {
+              "id": "id_1775445685772",
+              "name": "Hoàng Thị Nga",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Nguyễn Văn Việt"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775447104363",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                },
+                {
+                  "id": "id_1775447105997",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "id_1775445717550",
+              "name": "Hoàng Văn Dũng",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Phạm Phương Loan"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775447099767",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                },
+                {
+                  "id": "id_1775447101873",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "id_1775445886097",
+              "name": "Hoàng Thị Hoa",
+              "info": "",
+              "spouses": [
+                {
+                  "name": "Nguyễn Văn Ngọc"
+                }
+              ],
+              "children": [
+                {
+                  "id": "id_1775447095068",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                },
+                {
+                  "id": "id_1775447097691",
+                  "name": "Người mới",
+                  "info": "",
+                  "spouses": [],
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
