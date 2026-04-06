@@ -57,7 +57,10 @@
 
 <div class="toolbar">
     <button class="btn-tool" style="background:#8e44ad" onclick="exportToJson()">💾 Lưu Gia Phả (JSON)</button>
-    <button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở file Gia Phả</button>
+	<button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở file Gia Phả</button>
+	<p>Mặc định nội dung Gia phả sẽ được tải từ hoangminhhp234.github.io/quoctuan/GiaPha.json</p>
+	<p>Bạn có thể tải nội lên dung Gia phả của bạn, và nhớ bấm lưu file Gia phả về máy trước khi tắt trang này.
+    
     <input type="file" id="import-file" accept=".json" onchange="importFromJson(event)" style="display:none">
 </div>
 
