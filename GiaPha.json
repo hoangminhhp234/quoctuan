@@ -47,7 +47,8 @@
                       "spouses": [],
                       "children": []
                     }
-                  ]
+                  ],
+                  "gender": "female"
                 },
                 {
                   "id": "id_1775444457107",
@@ -74,7 +75,8 @@
                       "name": "Bùi Thị Minh (Thủy)",
                       "info": "",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     },
                     {
                       "id": "id_1775444688772",
@@ -83,7 +85,8 @@
                       "spouses": [],
                       "children": []
                     }
-                  ]
+                  ],
+                  "gender": "male"
                 },
                 {
                   "id": "id_1775447689436",
@@ -109,9 +112,11 @@
                       "spouses": [],
                       "children": []
                     }
-                  ]
+                  ],
+                  "gender": "male"
                 }
-              ]
+              ],
+              "gender": "female"
             },
             {
               "id": "id_1775444225316",
@@ -145,7 +150,8 @@
                       "name": "Người mới",
                       "info": "",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     },
                     {
                       "id": "id_1775446658431",
@@ -154,16 +160,19 @@
                       "spouses": [],
                       "children": []
                     }
-                  ]
+                  ],
+                  "gender": "female"
                 },
                 {
                   "id": "id_1775444907992",
                   "name": "Nguyễn Thị Phương",
                   "info": "sn1996",
                   "spouses": [],
-                  "children": []
+                  "children": [],
+                  "gender": "female"
                 }
-              ]
+              ],
+              "gender": "female"
             },
             {
               "id": "id_1775444341451",
@@ -190,14 +199,16 @@
                       "name": "Kim Mina",
                       "info": "sn2018",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     },
                     {
                       "id": "id_1775445066927",
                       "name": "Kim Min Chi",
                       "info": "sn2020",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     },
                     {
                       "id": "id_1775445080175",
@@ -213,7 +224,8 @@
                   "name": "Nguyễn Thị Thoa",
                   "info": "1989 - 2007",
                   "spouses": [],
-                  "children": []
+                  "children": [],
+                  "gender": "female"
                 },
                 {
                   "id": "id_1775445120892",
@@ -240,16 +252,19 @@
                       "name": "Lim Mi So (Seok)",
                       "info": "sn2023",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     },
                     {
                       "id": "id_1775446670336",
                       "name": "Lim Ha Yun (Seok)",
                       "info": "sn2025",
                       "spouses": [],
-                      "children": []
+                      "children": [],
+                      "gender": "female"
                     }
-                  ]
+                  ],
+                  "gender": "female"
                 },
                 {
                   "id": "id_1775445343775",
@@ -275,18 +290,22 @@
                       "spouses": [],
                       "children": []
                     }
-                  ]
+                  ],
+                  "gender": "male"
                 }
-              ]
+              ],
+              "gender": "male"
             },
             {
               "id": "id_1775448453243",
               "name": "Nguyễn Thị Điệp",
               "info": "",
               "spouses": [],
-              "children": []
+              "children": [],
+              "gender": "female"
             }
-          ]
+          ],
+          "gender": "female"
         },
         {
           "id": "id_1775444094906",
@@ -317,7 +336,8 @@
                       "name": "Công Thành"
                     }
                   ],
-                  "children": []
+                  "children": [],
+                  "gender": "female"
                 },
                 {
                   "id": "id_1775445618410",
@@ -326,7 +346,8 @@
                   "spouses": [],
                   "children": []
                 }
-              ]
+              ],
+              "gender": "female"
             },
             {
               "id": "id_1775445544647",
@@ -341,9 +362,11 @@
                   "spouses": [],
                   "children": []
                 }
-              ]
+              ],
+              "gender": "female"
             }
-          ]
+          ],
+          "gender": "male"
         },
         {
           "id": "id_1775444155159",
@@ -360,7 +383,8 @@
               "name": "Hoàng Thị Nguyệt",
               "info": "",
               "spouses": [],
-              "children": []
+              "children": [],
+              "gender": "female"
             },
             {
               "id": "id_1775445685772",
@@ -386,7 +410,8 @@
                   "spouses": [],
                   "children": []
                 }
-              ]
+              ],
+              "gender": "female"
             },
             {
               "id": "id_1775445717550",
@@ -412,7 +437,8 @@
                   "spouses": [],
                   "children": []
                 }
-              ]
+              ],
+              "gender": "male"
             },
             {
               "id": "id_1775445886097",
@@ -438,9 +464,11 @@
                   "spouses": [],
                   "children": []
                 }
-              ]
+              ],
+              "gender": "female"
             }
-          ]
+          ],
+          "gender": "male"
         }
       ]
     }
