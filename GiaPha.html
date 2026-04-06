@@ -2,26 +2,19 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Gia Phả Dòng Họ - Thủ Công & Tự Động</title>
+    <title>Gia Phả Dòng Họ - Quản lý Giới tính</title>
     <style>
-        :root { --line-color: #999; --node-border: #3498db; }
+        :root { --line-color: #999; --male-color: #3498db; --female-color: #e91e63; }
         body { font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 15px; }
         
-        /* THANH ĐIỀU KHIỂN */
-        .toolbar { 
-            position: sticky; left: 0; background: white; padding: 10px; 
-            border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-            margin-bottom: 15px; z-index: 100; display: inline-block; 
-        }
+        .toolbar { position: sticky; left: 0; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; z-index: 100; display: inline-block; }
         .btn-tool { padding: 6px 12px; margin-right: 8px; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; color: white; font-size: 13px; }
 
-        /* VÙNG CHỨA CÂY - CUỘN NGANG */
         .tree-wrapper { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 30px; }
         .tree { display: inline-block; min-width: 100%; }
         .tree ul { padding-top: 15px; position: relative; display: flex; justify-content: flex-start; padding-left: 0; }
         .tree li { text-align: center; list-style-type: none; position: relative; padding: 15px 2px 0 2px; }
 
-        /* ĐƯỜNG KẺ NỐI */
         .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--line-color); width: 50%; height: 15px; }
         .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--line-color); }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
@@ -31,25 +24,23 @@
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
         .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--line-color); width: 0; height: 15px; }
 
-        /* HỘP THÀNH VIÊN - GỌN GÀNG */
+        /* HỘP THÀNH VIÊN - PHÂN BIỆT MÀU SẮC */
         .node-card {
-            border: 2px solid var(--node-border); padding: 6px; display: inline-block;
+            border: 2px solid var(--line-color); padding: 6px; display: inline-block;
             border-radius: 6px; background: white; min-width: 110px; max-width: 140px;
             cursor: pointer; transition: 0.2s; vertical-align: top; white-space: normal;
         }
-        .node-card:hover { border-color: #2ecc71; background: #f0fff4; }
+        .node-card.male { border-color: var(--male-color); border-width: 3px; }
+        .node-card.female { border-color: var(--female-color); border-width: 3px; }
+        .node-card:hover { filter: brightness(0.95); }
+        
         .name { font-weight: bold; color: #2c3e50; display: block; font-size: 0.9em; }
         .info { font-size: 0.75em; color: #7f8c8d; }
         .spouse-box { color: #e67e22; font-size: 0.7em; margin-top: 3px; border-top: 1px dashed #ddd; padding-top: 2px; font-style: italic; }
 
-        /* MODAL NHẬP LIỆU (LUÔN ẨN MẶC ĐỊNH) */
         .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; }
-        #modal { 
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            background: white; padding: 20px; border-radius: 12px; z-index: 201; 
-            width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-        }
-        input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 12px; z-index: 201; width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        input, select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         button { cursor: pointer; border: none; border-radius: 5px; color: white; font-weight: bold; margin-bottom: 5px; }
     </style>
 </head>
@@ -60,41 +51,47 @@
     <button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở File Gia Phả Có Sẵn</button>
     <button class="btn-tool" style="background:#d35400" onclick="resetAndReload()">🔄 Tải Lại Gia Phả Gốc</button>
 	<p>Mặc định nội dung Gia phả sẽ được tải từ hoangminhhp234.github.io/quoctuan/GiaPha.json</p>
-	<p>Bạn có thể tải nội lên dung Gia phả của bạn, và nhớ bấm lưu file Gia phả về máy trước khi tắt trang này.
+	<p>Bạn có thể tải Gia phả của bạn lên để chỉnh sửa, và nhớ bấm lưu file Gia phả về máy trước khi tắt trang này.
     <input type="file" id="import-file" accept=".json" onchange="importFromJson(event)" style="display:none">
 </div>
 
 <div class="tree-wrapper">
-    <div class="tree" id="tree-container">Đang tải dữ liệu...</div>
+    <div class="tree" id="tree-container">Đang tải...</div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeModal()"></div>
 <div id="modal">
-    <h3 id="m-title" style="margin-top:0; font-size: 1.1em;">Chỉnh sửa</h3>
-    <input type="text" id="m-name" placeholder="Họ và tên">
-    <input type="text" id="m-info" placeholder="Năm sinh/mất">
+    <h3 style="margin-top:0; font-size: 1.1em;">Chỉnh sửa thông tin</h3>
+    <label style="font-size: 0.8em;">Họ và tên:</label>
+    <input type="text" id="m-name">
     
-    <div id="spouse-list-ui" style="max-height: 100px; overflow-y: auto; margin: 5px 0; border: 1px solid #eee;"></div>
+    <label style="font-size: 0.8em;">Giới tính:</label>
+    <select id="m-gender">
+        <option value="male">Nam</option>
+        <option value="female">Nữ</option>
+    </select>
+
+    <label style="font-size: 0.8em;">Thông tin (Năm sinh/mất):</label>
+    <input type="text" id="m-info">
+    
+    <div id="spouse-list-ui" style="max-height: 80px; overflow-y: auto; margin: 5px 0; border: 1px solid #eee;"></div>
     <input type="text" id="new-spouse-name" placeholder="Tên Vợ/Chồng mới">
     <button style="background:#e67e22; width:100%; padding:6px; font-size: 0.8em;" onclick="addSpouseAction()">+ Thêm Vợ/Chồng</button>
     <hr>
     <button style="background:#27ae60; width:100%; padding:8px" onclick="addChildAction()">+ Thêm Con</button>
-    <button style="background:#3498db; width:100%; padding:10px; margin-top:5px" onclick="saveChanges()">LƯU TẤT CẢ</button>
+    <button style="background:#3498db; width:100%; padding:10px; margin-top:5px" onclick="saveChanges()">LƯU THAY ĐỔI</button>
     <button style="background:#e74c3c; width:100%; padding:5px; margin-top:10px; font-size:0.75em" id="del-btn" onclick="deleteNodeAction()">Xóa người này</button>
-    <button style="background:#95a5a6; width:100%; padding:5px; margin-top:5px; font-size:0.75em" onclick="closeModal()">Đóng</button>
 </div>
 
 <script>
     const GITHUB_JSON_URL = 'https://hoangminhhp234.github.io/quoctuan/GiaPha.json';
-    const LOCAL_STORAGE_KEY = 'giapha_vượng_data';
+    const LOCAL_STORAGE_KEY = 'giapha_vượng_gender_v1';
     
     let familyData = null;
     let activeId = null;
 
-    // --- 1. KHỞI TẠO DỮ LIỆU ---
     async function initData() {
         const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
-        
         if (localData) {
             familyData = JSON.parse(localData);
             render();
@@ -106,25 +103,21 @@
     async function fetchFromGitHub() {
         try {
             const response = await fetch(GITHUB_JSON_URL);
-            if (!response.ok) throw new Error("Không tìm thấy file");
             familyData = await response.json();
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(familyData, null, 2));
             render();
         } catch (err) {
-            console.error("Lỗi GitHub:", err);
-            familyData = { id: "root", name: "Cụ Tổ", info: "Lỗi tải file", spouses: [], children: [] };
+            familyData = { id: "root", name: "Cụ Tổ", gender: "male", info: "Đời 1", spouses: [], children: [] };
             render();
         }
     }
 
     function resetAndReload() {
-        if(confirm("Bạn muốn xóa dữ liệu đang sửa trên trình duyệt và tải lại bản gốc từ GitHub?")) {
+        if(confirm("Tải lại bản gốc từ GitHub? Mọi chỉnh sửa chưa lưu sẽ mất.")) {
             localStorage.removeItem(LOCAL_STORAGE_KEY);
             location.reload();
         }
     }
 
-    // --- 2. LOGIC CÂY GIA PHẢ ---
     function findNode(root, id) {
         if (root.id === id) return root;
         if (root.children) {
@@ -142,17 +135,19 @@
         const ul = document.createElement('ul');
         ul.appendChild(createLi(familyData));
         container.appendChild(ul);
-        // Luôn lưu bản Pretty Print vào LocalStorage
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(familyData, null, 2));
     }
 
     function createLi(node) {
         const li = document.createElement('li');
         const card = document.createElement('div');
-        card.className = "node-card";
+        // Áp dụng class theo giới tính
+        card.className = `node-card ${node.gender || 'male'}`;
+        
         let spousesHtml = (node.spouses || []).map(s => `<div class="spouse-box">💍 ${s.name}</div>`).join('');
         card.innerHTML = `<span class="name">${node.name}</span><span class="info">${node.info}</span>${spousesHtml}`;
         card.onclick = () => openModal(node.id);
+        
         li.appendChild(card);
         if (node.children && node.children.length > 0) {
             const ul = document.createElement('ul');
@@ -162,12 +157,12 @@
         return li;
     }
 
-    // --- 3. TƯƠNG TÁC MODAL ---
     function openModal(id) {
         activeId = id;
         const node = findNode(familyData, id);
         document.getElementById('m-name').value = node.name;
         document.getElementById('m-info').value = node.info;
+        document.getElementById('m-gender').value = node.gender || 'male';
         document.getElementById('del-btn').style.display = (id === 'root') ? 'none' : 'block';
         refreshSpouseUI(node);
         document.getElementById('modal').style.display = 'block';
@@ -207,7 +202,14 @@
     function addChildAction() {
         const node = findNode(familyData, activeId);
         if(!node.children) node.children = [];
-        node.children.push({ id: "id_" + Date.now(), name: "Người mới", info: "", spouses: [], children: [] });
+        node.children.push({ 
+            id: "id_" + Date.now(), 
+            name: "Người mới", 
+            gender: "male", 
+            info: "", 
+            spouses: [], 
+            children: [] 
+        });
         saveChanges();
     }
 
@@ -215,11 +217,12 @@
         const node = findNode(familyData, activeId);
         node.name = document.getElementById('m-name').value;
         node.info = document.getElementById('m-info').value;
+        node.gender = document.getElementById('m-gender').value;
         render(); closeModal();
     }
 
     function deleteNodeAction() {
-        if(!confirm("Xóa người này và toàn bộ con cháu?")) return;
+        if(!confirm("Xóa người này?")) return;
         const rm = (p, id) => {
             if(!p.children) return false;
             const idx = p.children.findIndex(c => c.id === id);
@@ -230,9 +233,7 @@
         rm(familyData, activeId); render(); closeModal();
     }
 
-    // --- 4. BACKUP & IMPORT ---
     function exportToJson() {
-        // Pretty Print với 2 khoảng trắng
         const dataStr = JSON.stringify(familyData, null, 2);
         const dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(dataStr);
         const dl = document.createElement('a');
@@ -245,15 +246,12 @@
         const file = e.target.files[0];
         const reader = new FileReader();
         reader.onload = (ev) => { 
-            try {
-                familyData = JSON.parse(ev.target.result); 
-                render(); 
-            } catch(e) { alert("File JSON không hợp lệ!"); }
+            familyData = JSON.parse(ev.target.result); 
+            render(); 
         };
         reader.readAsText(file);
     }
 
-    // Chạy khi trang tải xong
     window.onload = initData;
 </script>
 </body>
