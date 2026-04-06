@@ -2,22 +2,26 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Gia Phả Vượng - Bản Chuẩn Hóa</title>
+    <title>Gia Phả Dòng Họ - Thủ Công & Tự Động</title>
     <style>
         :root { --line-color: #999; --node-border: #3498db; }
         body { font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 15px; }
         
         /* THANH ĐIỀU KHIỂN */
-        .toolbar { position: sticky; left: 0; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; z-index: 100; display: inline-block; }
+        .toolbar { 
+            position: sticky; left: 0; background: white; padding: 10px; 
+            border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+            margin-bottom: 15px; z-index: 100; display: inline-block; 
+        }
         .btn-tool { padding: 6px 12px; margin-right: 8px; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; color: white; font-size: 13px; }
 
-        /* VÙNG CHỨA CÂY */
+        /* VÙNG CHỨA CÂY - CUỘN NGANG */
         .tree-wrapper { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 30px; }
         .tree { display: inline-block; min-width: 100%; }
         .tree ul { padding-top: 15px; position: relative; display: flex; justify-content: flex-start; padding-left: 0; }
         .tree li { text-align: center; list-style-type: none; position: relative; padding: 15px 2px 0 2px; }
 
-        /* ĐƯỜNG KẺ */
+        /* ĐƯỜNG KẺ NỐI */
         .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--line-color); width: 50%; height: 15px; }
         .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--line-color); }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
@@ -27,7 +31,7 @@
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
         .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--line-color); width: 0; height: 15px; }
 
-        /* HỘP THÀNH VIÊN */
+        /* HỘP THÀNH VIÊN - GỌN GÀNG */
         .node-card {
             border: 2px solid var(--node-border); padding: 6px; display: inline-block;
             border-radius: 6px; background: white; min-width: 110px; max-width: 140px;
@@ -38,14 +42,10 @@
         .info { font-size: 0.75em; color: #7f8c8d; }
         .spouse-box { color: #e67e22; font-size: 0.7em; margin-top: 3px; border-top: 1px dashed #ddd; padding-top: 2px; font-style: italic; }
 
-        /* --- PHẦN QUAN TRỌNG: ẨN MỤC TÙY CHỌN --- */
-        .overlay { 
-            display: none; position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; 
-        }
+        /* MODAL NHẬP LIỆU (LUÔN ẨN MẶC ĐỊNH) */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; }
         #modal { 
-            display: none; /* Luôn ẩn mặc định */
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             background: white; padding: 20px; border-radius: 12px; z-index: 201; 
             width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
         }
@@ -56,16 +56,16 @@
 <body>
 
 <div class="toolbar">
-    <button class="btn-tool" style="background:#8e44ad" onclick="exportToJson()">💾 Lưu Gia Phả (JSON)</button>
-	<button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở file Gia Phả</button>
+    <button class="btn-tool" style="background:#8e44ad" onclick="exportToJson()">💾 Lưu File JSON</button>
+    <button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở File Máy Tính</button>
+    <button class="btn-tool" style="background:#d35400" onclick="resetAndReload()">🔄 Tải Lại Từ GitHub</button>
 	<p>Mặc định nội dung Gia phả sẽ được tải từ hoangminhhp234.github.io/quoctuan/GiaPha.json</p>
 	<p>Bạn có thể tải nội lên dung Gia phả của bạn, và nhớ bấm lưu file Gia phả về máy trước khi tắt trang này.
-    
     <input type="file" id="import-file" accept=".json" onchange="importFromJson(event)" style="display:none">
 </div>
 
 <div class="tree-wrapper">
-    <div class="tree" id="tree-container"></div>
+    <div class="tree" id="tree-container">Đang tải dữ liệu...</div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeModal()"></div>
@@ -74,7 +74,7 @@
     <input type="text" id="m-name" placeholder="Họ và tên">
     <input type="text" id="m-info" placeholder="Năm sinh/mất">
     
-    <div id="spouse-list-ui" style="max-height: 100px; overflow-y: auto; margin: 5px 0;"></div>
+    <div id="spouse-list-ui" style="max-height: 100px; overflow-y: auto; margin: 5px 0; border: 1px solid #eee;"></div>
     <input type="text" id="new-spouse-name" placeholder="Tên Vợ/Chồng mới">
     <button style="background:#e67e22; width:100%; padding:6px; font-size: 0.8em;" onclick="addSpouseAction()">+ Thêm Vợ/Chồng</button>
     <hr>
@@ -85,13 +85,46 @@
 </div>
 
 <script>
-    // Nhận dữ liệu cũ từ các phiên bản v3, v4, v5
-    let familyData = JSON.parse(localStorage.getItem('giapha_v4')) || 
-                     JSON.parse(localStorage.getItem('giapha_v5')) || {
-        id: "root", name: "Cụ Tổ", info: "Đời 1", spouses: [], children: []
-    };
+    const GITHUB_JSON_URL = 'https://hoangminhhp234.github.io/quoctuan/GiaPha.json';
+    const LOCAL_STORAGE_KEY = 'giapha_vượng_data';
+    
+    let familyData = null;
     let activeId = null;
 
+    // --- 1. KHỞI TẠO DỮ LIỆU ---
+    async function initData() {
+        const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
+        
+        if (localData) {
+            familyData = JSON.parse(localData);
+            render();
+        } else {
+            await fetchFromGitHub();
+        }
+    }
+
+    async function fetchFromGitHub() {
+        try {
+            const response = await fetch(GITHUB_JSON_URL);
+            if (!response.ok) throw new Error("Không tìm thấy file");
+            familyData = await response.json();
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(familyData, null, 2));
+            render();
+        } catch (err) {
+            console.error("Lỗi GitHub:", err);
+            familyData = { id: "root", name: "Cụ Tổ", info: "Lỗi tải file", spouses: [], children: [] };
+            render();
+        }
+    }
+
+    function resetAndReload() {
+        if(confirm("Bạn muốn xóa dữ liệu đang sửa trên trình duyệt và tải lại bản gốc từ GitHub?")) {
+            localStorage.removeItem(LOCAL_STORAGE_KEY);
+            location.reload();
+        }
+    }
+
+    // --- 2. LOGIC CÂY GIA PHẢ ---
     function findNode(root, id) {
         if (root.id === id) return root;
         if (root.children) {
@@ -109,14 +142,15 @@
         const ul = document.createElement('ul');
         ul.appendChild(createLi(familyData));
         container.appendChild(ul);
-        localStorage.setItem('giapha_v4', JSON.stringify(familyData));
+        // Luôn lưu bản Pretty Print vào LocalStorage
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(familyData, null, 2));
     }
 
     function createLi(node) {
         const li = document.createElement('li');
         const card = document.createElement('div');
         card.className = "node-card";
-        let spousesHtml = node.spouses ? node.spouses.map(s => `<div class="spouse-box">💍 ${s.name}</div>`).join('') : "";
+        let spousesHtml = (node.spouses || []).map(s => `<div class="spouse-box">💍 ${s.name}</div>`).join('');
         card.innerHTML = `<span class="name">${node.name}</span><span class="info">${node.info}</span>${spousesHtml}`;
         card.onclick = () => openModal(node.id);
         li.appendChild(card);
@@ -128,6 +162,7 @@
         return li;
     }
 
+    // --- 3. TƯƠNG TÁC MODAL ---
     function openModal(id) {
         activeId = id;
         const node = findNode(familyData, id);
@@ -147,13 +182,11 @@
     function refreshSpouseUI(node) {
         const list = document.getElementById('spouse-list-ui');
         list.innerHTML = "";
-        if(node.spouses) {
-            node.spouses.forEach((s, i) => {
-                list.innerHTML += `<div style="display:flex; justify-content:space-between; background:#eee; padding:3px; margin:2px 0; font-size:0.75em">
-                    <span>${s.name}</span><button onclick="removeSpouse(${i})" style="background:red; color:white; border:none; padding:0 5px">X</button>
-                </div>`;
-            });
-        }
+        (node.spouses || []).forEach((s, i) => {
+            list.innerHTML += `<div style="display:flex; justify-content:space-between; background:#eee; padding:3px; margin:2px 0; font-size:0.75em">
+                <span>${s.name}</span><button onclick="removeSpouse(${i})" style="background:red; color:white; border:none; padding:0 5px">X</button>
+            </div>`;
+        });
     }
 
     function addSpouseAction() {
@@ -186,7 +219,7 @@
     }
 
     function deleteNodeAction() {
-        if(!confirm("Xóa người này và con cháu?")) return;
+        if(!confirm("Xóa người này và toàn bộ con cháu?")) return;
         const rm = (p, id) => {
             if(!p.children) return false;
             const idx = p.children.findIndex(c => c.id === id);
@@ -197,25 +230,31 @@
         rm(familyData, activeId); render(); closeModal();
     }
 
+    // --- 4. BACKUP & IMPORT ---
     function exportToJson() {
-    // Thêm tham số null và 2 để định dạng xuống dòng dễ nhìn
-    const dataStr = JSON.stringify(familyData, null, 2);
-    const dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(dataStr);
-    
-    const dl = document.createElement('a');
-    dl.setAttribute("href", dataUri);
-    dl.setAttribute("download", "GiaPha.json");
-    dl.click();
-}
+        // Pretty Print với 2 khoảng trắng
+        const dataStr = JSON.stringify(familyData, null, 2);
+        const dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(dataStr);
+        const dl = document.createElement('a');
+        dl.setAttribute("href", dataUri);
+        dl.setAttribute("download", "GiaPha.json");
+        dl.click();
+    }
 
     function importFromJson(e) {
         const file = e.target.files[0];
         const reader = new FileReader();
-        reader.onload = (ev) => { familyData = JSON.parse(ev.target.result); render(); };
+        reader.onload = (ev) => { 
+            try {
+                familyData = JSON.parse(ev.target.result); 
+                render(); 
+            } catch(e) { alert("File JSON không hợp lệ!"); }
+        };
         reader.readAsText(file);
     }
 
-    render();
+    // Chạy khi trang tải xong
+    window.onload = initData;
 </script>
 </body>
 </html>
