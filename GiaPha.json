@@ -45,7 +45,17 @@
                       "name": "Nguyễn Văn Trung",
                       "info": "",
                       "spouses": [],
-                      "children": []
+                      "children": [
+                        {
+                          "id": "id_1775480023933",
+                          "name": "Người mới",
+                          "gender": "female",
+                          "info": "",
+                          "spouses": [],
+                          "children": []
+                        }
+                      ],
+                      "gender": "male"
                     }
                   ],
                   "gender": "female"
@@ -230,7 +240,7 @@
                 {
                   "id": "id_1775445120892",
                   "name": "Nguyễn Thị Thảo",
-                  "info": "1989",
+                  "info": "sn1989",
                   "spouses": [
                     {
                       "name": "Đặng Vũ Vượng"
@@ -272,7 +282,7 @@
                   "info": "sn1991",
                   "spouses": [
                     {
-                      "name": "Phạm Ngọc Hân (sn1991)"
+                      "name": "Phạm Ngọc Hân sn1991"
                     }
                   ],
                   "children": [
@@ -341,10 +351,20 @@
                 },
                 {
                   "id": "id_1775445618410",
-                  "name": "Hoàng Văn Trung",
+                  "name": "Nguyễn Văn Trung",
                   "info": "",
                   "spouses": [],
-                  "children": []
+                  "children": [
+                    {
+                      "id": "id_1775524172200",
+                      "name": "Người mới",
+                      "gender": "male",
+                      "info": "",
+                      "spouses": [],
+                      "children": []
+                    }
+                  ],
+                  "gender": "male"
                 }
               ],
               "gender": "female"
