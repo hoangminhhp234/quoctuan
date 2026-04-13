@@ -2,255 +2,302 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Gia Phả - 0971282336</title>
+    <title>Gia Phả - Bản Fix Lỗi Xem Ảnh & Crop</title>
     <style>
         :root { --line-color: #999; --male-color: #3498db; --female-color: #e91e63; }
-        body { font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 15px; }
+        body { 
+            font-family: sans-serif; background: #f8f9fa; margin: 0; padding: 0; 
+            overflow: hidden; height: 100vh; width: 100vw; user-select: none;
+        }
         
-        .toolbar { position: sticky; left: 0; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; z-index: 100; display: inline-block; }
-        .btn-tool { padding: 6px 12px; margin-right: 8px; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; color: white; font-size: 13px; }
+        /* Toolbar & Zoom */
+        .toolbar { position: fixed; top: 10px; left: 10px; background: white; padding: 10px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 100; }
+        .btn-tool { padding: 8px 12px; margin-right: 5px; border-radius: 4px; cursor: pointer; border: none; font-weight: bold; color: white; font-size: 12px; }
+        .zoom-controls { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 100; }
+        .btn-zoom { width: 45px; height: 45px; border-radius: 50%; border: none; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .tree-wrapper { width: 100%; overflow-x: auto; white-space: nowrap; padding-bottom: 30px; }
-        .tree { display: inline-block; min-width: 100%; }
-        .tree ul { padding-top: 15px; position: relative; display: flex; justify-content: flex-start; padding-left: 0; }
-        .tree li { text-align: center; list-style-type: none; position: relative; padding: 15px 2px 0 2px; }
+        /* Tree Area */
+        #wrapper { width: 100vw; height: 100vh; overflow: auto; cursor: grab; background: #e5e7eb; scrollbar-width: none; }
+        #wrapper::-webkit-scrollbar { display: none; }
+        #tree-container { display: inline-block; padding: 500px; transform-origin: center center; transition: transform 0.1s ease-out; }
 
-        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--line-color); width: 50%; height: 15px; }
+        /* Tree CSS */
+        .tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; }
+        .tree li { text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; }
+        .tree li::before, .tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid var(--line-color); width: 50%; height: 20px; }
         .tree li::after { right: auto; left: 50%; border-left: 2px solid var(--line-color); }
         .tree li:only-child::after, .tree li:only-child::before { display: none; }
         .tree li:only-child { padding-top: 0; }
-        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
-        .tree li:last-child::before { border-right: 2px solid var(--line-color); border-radius: 0 5px 0 0; }
         .tree li:first-child::after { border-radius: 5px 0 0 0; }
-        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--line-color); width: 0; height: 15px; }
+        .tree li:last-child::before { border-right: 2px solid var(--line-color); border-radius: 0 5px 0 0; }
+        .tree li:first-child::before, .tree li:last-child::after { border: 0 none; }
+        .tree ul ul::before { content: ''; position: absolute; top: 0; left: 50%; border-left: 2px solid var(--line-color); width: 0; height: 20px; }
 
-        /* HỘP THÀNH VIÊN - PHÂN BIỆT MÀU SẮC */
-        .node-card {
-            border: 2px solid var(--line-color); padding: 6px; display: inline-block;
-            border-radius: 6px; background: white; min-width: 110px; max-width: 140px;
-            cursor: pointer; transition: 0.2s; vertical-align: top; white-space: normal;
-        }
+        /* Cards */
+        .node-card { border: 2px solid var(--line-color); padding: 8px; display: inline-block; border-radius: 8px; background: white; min-width: 120px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .node-card.male { border-color: var(--male-color); border-width: 3px; }
         .node-card.female { border-color: var(--female-color); border-width: 3px; }
-        .node-card:hover { filter: brightness(0.95); }
-        
-        .name { font-weight: bold; color: #2c3e50; display: block; font-size: 0.9em; }
-        .info { font-size: 0.75em; color: #7f8c8d; }
-        .spouse-box { color: #e67e22; font-size: 0.7em; margin-top: 3px; border-top: 1px dashed #ddd; padding-top: 2px; font-style: italic; }
+        .avatar { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; margin-bottom: 5px; border: 2px solid #eee; }
+        .name { font-weight: bold; color: #1f2937; display: block; font-size: 0.9em; }
+        .spouse-item { color: #d97706; font-size: 0.75em; margin-top: 5px; border-top: 1px dashed #ddd; padding-top: 3px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .spouse-avatar { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
 
-        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 200; }
-        #modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 12px; z-index: 201; width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        input, select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        button { cursor: pointer; border: none; border-radius: 5px; color: white; font-weight: bold; margin-bottom: 5px; }
+        /* Modals */
+        .overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 200; }
+        .modal-box { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 12px; z-index: 201; width: 320px; max-height: 90vh; overflow-y: auto; }
+
+        /* Crop Tool */
+        #crop-container { width: 250px; height: 250px; background: #000; margin: 10px auto; position: relative; overflow: hidden; touch-action: none; cursor: move; }
+        #crop-img { position: absolute; top: 0; left: 0; transform-origin: top left; pointer-events: none; }
+        .crop-mask { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 180px; height: 180px; border-radius: 50%; border: 2px dashed #fff; box-shadow: 0 0 0 1000px rgba(0,0,0,0.6); pointer-events: none; }
+
+        /* Full Photo View - FIXED */
+        #full-photo-view { 
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            background: rgba(0,0,0,0.95); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;
+        }
+        #full-photo-view img { max-width: 90%; max-height: 80%; border: 4px solid white; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+        .btn-close-photo { margin-top: 20px; padding: 10px 25px; background: white; color: black; border-radius: 50px; font-weight: bold; cursor: pointer; }
+
+        input, select { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="toolbar">
-    <button class="btn-tool" style="background:#8e44ad" onclick="exportToJson()">💾 Lưu Gia Phả Về Máy</button>
-    <button class="btn-tool" style="background:#2c3e50" onclick="document.getElementById('import-file').click()">📂 Mở File Gia Phả Có Sẵn</button>
-    <button class="btn-tool" style="background:#d35400" onclick="resetAndReload()">🔄 Tải Lại Gia Phả Gốc</button>
-	<p>Mặc định nội dung Gia phả sẽ được tải từ hoangminhhp234.github.io/quoctuan/GiaPha.json</p>
-	<p>Bạn có thể tải Gia phả của bạn lên để chỉnh sửa, và nhớ bấm lưu file Gia phả về máy trước khi tắt trang này.
+    <button class="btn-tool" style="background:#8b5cf6" onclick="exportToJson()">💾 Lưu JSON</button>
+    <button class="btn-tool" style="background:#4b5563" onclick="document.getElementById('import-file').click()">📂 Mở File</button>
     <input type="file" id="import-file" accept=".json" onchange="importFromJson(event)" style="display:none">
 </div>
 
-<div class="tree-wrapper">
-    <div class="tree" id="tree-container">Đang tải...</div>
+<div class="zoom-controls">
+    <button class="btn-zoom" onclick="changeZoom(0.1)">+</button>
+    <button class="btn-zoom" onclick="changeZoom(-0.1)">-</button>
+    <button class="btn-zoom" style="font-size: 14px;" onclick="resetZoom()">1:1</button>
 </div>
 
-<div class="overlay" id="overlay" onclick="closeModal()"></div>
-<div id="modal">
-    <h3 style="margin-top:0; font-size: 1.1em;">Chỉnh sửa thông tin</h3>
-    <label style="font-size: 0.8em;">Họ và tên:</label>
-    <input type="text" id="m-name">
-    
-    <label style="font-size: 0.8em;">Giới tính:</label>
-    <select id="m-gender">
-        <option value="male">Nam</option>
-        <option value="female">Nữ</option>
-    </select>
+<div id="wrapper">
+    <div class="tree" id="tree-container"></div>
+</div>
 
-    <label style="font-size: 0.8em;">Thông tin (Năm sinh/mất):</label>
-    <input type="text" id="m-info">
+<div class="overlay" id="overlay" onclick="closeAllModals()"></div>
+
+<div id="modal-edit" class="modal-box">
+    <h3 style="margin-top:0; text-align: center;">Thông tin thành viên</h3>
+    <div style="text-align:center">
+        <img id="preview-img" src="" class="avatar" style="width:90px; height:90px; cursor:pointer; border:2px solid #3b82f6" onclick="openFullView(this.src)">
+        <p style="font-size:10px; color:#666; margin:2px 0;">(Bấm vào ảnh để phóng to)</p>
+        <label style="display:inline-block; font-size: 11px; color: #3b82f6; cursor: pointer; text-decoration: underline; margin-bottom: 10px;">
+            Đổi ảnh đại diện
+            <input type="file" accept="image/*" style="display:none" onchange="initCropProcess(event, 'member')">
+        </label>
+    </div>
+
+    <input type="text" id="m-name" placeholder="Họ và tên">
+    <select id="m-gender"><option value="male">Nam</option><option value="female">Nữ</option></select>
+    <input type="text" id="m-info" placeholder="Ngày sinh / Thông tin">
     
-    <div id="spouse-list-ui" style="max-height: 80px; overflow-y: auto; margin: 5px 0; border: 1px solid #eee;"></div>
-    <input type="text" id="new-spouse-name" placeholder="Tên Vợ/Chồng mới">
-    <button style="background:#e67e22; width:100%; padding:6px; font-size: 0.8em;" onclick="addSpouseAction()">+ Thêm Vợ/Chồng</button>
+    <div style="margin-top:10px; border-top: 1px solid #eee; padding-top:10px;">
+        <p style="font-size:0.8em; font-weight:bold; margin:0 0 5px 0;">Vợ / Chồng:</p>
+        <div id="spouse-list-ui"></div>
+        <div style="display:flex; gap:5px; margin-top:5px;">
+            <input type="text" id="new-spouse-name" placeholder="Tên phối ngẫu" style="flex:1">
+            <button style="background:#f59e0b; padding:0 10px;" onclick="addSpouseAction()">+</button>
+        </div>
+    </div>
     <hr>
-    <button style="background:#27ae60; width:100%; padding:8px" onclick="addChildAction()">+ Thêm Con</button>
-    <button style="background:#3498db; width:100%; padding:10px; margin-top:5px" onclick="saveChanges()">LƯU THAY ĐỔI</button>
-    <button style="background:#e74c3c; width:100%; padding:5px; margin-top:10px; font-size:0.75em" id="del-btn" onclick="deleteNodeAction()">Xóa người này</button>
+    <button style="background:#059669; width:100%; padding:10px" onclick="addChildAction()">+ Thêm Con</button>
+    <button style="background:#2563eb; width:100%; padding:12px; margin-top:8px" onclick="saveChanges()">LƯU LẠI</button>
+    <button style="background:#dc2626; width:100%; padding:5px; margin-top:10px; font-size:0.7em" onclick="deleteNodeAction()">Xóa người này</button>
+</div>
+
+<div id="modal-crop" class="modal-box" style="width:300px; text-align:center;">
+    <h3 id="crop-title" style="margin:0; font-size: 1em;">Cắt ảnh</h3>
+    <div id="crop-container" onpointerdown="startDraggingCrop(event)">
+        <img id="crop-img" src="">
+        <div class="crop-mask"></div>
+    </div>
+    <input type="range" id="crop-zoom" min="0.1" max="4" step="0.01" value="1" oninput="applyCropTransform()">
+    <div style="display:flex; gap:10px; margin-top:10px;">
+        <button style="background:#6b7280; flex:1; padding:10px" onclick="closeCrop()">Hủy</button>
+        <button style="background:#10b981; flex:1; padding:10px" onclick="finishCrop()">Xác nhận</button>
+    </div>
+</div>
+
+<div id="full-photo-view">
+    <img id="full-img-src" src="">
+    <div class="btn-close-photo" onclick="closeFullView()">ĐÓNG LẠI</div>
 </div>
 
 <script>
-    const GITHUB_JSON_URL = 'https://hoangminhhp234.github.io/quoctuan/GiaPha.json';
-    const LOCAL_STORAGE_KEY = 'giapha_vượng_gender_v1';
-    
     let familyData = null;
     let activeId = null;
+    let currentZoom = 1;
+    let targetCropType = 'member'; // 'member' hoặc index phối ngẫu
 
-    async function initData() {
-        const localData = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (localData) {
-            familyData = JSON.parse(localData);
-            render();
+    // --- ZOOM & DRAG TREE ---
+    const wrapper = document.getElementById('wrapper');
+    let isDraggingTree = false, dragStart = { x: 0, y: 0, sL: 0, sT: 0 };
+
+    wrapper.onmousedown = (e) => {
+        if (e.target.closest('.node-card, .toolbar, .zoom-controls')) return;
+        isDraggingTree = true; wrapper.style.cursor = 'grabbing';
+        dragStart = { x: e.pageX, y: e.pageY, sL: wrapper.scrollLeft, sT: wrapper.scrollTop };
+    };
+    window.onmousemove = (e) => {
+        if (!isDraggingTree) return;
+        wrapper.scrollLeft = dragStart.sL - (e.pageX - dragStart.x);
+        wrapper.scrollTop = dragStart.sT - (e.pageY - dragStart.y);
+    };
+    window.onmouseup = () => { isDraggingTree = false; wrapper.style.cursor = 'grab'; };
+
+    function changeZoom(v) { currentZoom = Math.max(0.2, Math.min(3, currentZoom + v)); document.getElementById('tree-container').style.transform = `scale(${currentZoom})`; }
+    function resetZoom() { currentZoom = 1; document.getElementById('tree-container').style.transform = `scale(1)`; }
+
+    // --- CROP LOGIC (FIXED) ---
+    let cropState = { active: false, x: 0, y: 0, scale: 1, lastX: 0, lastY: 0 };
+
+    function initCropProcess(event, type) {
+        const file = event.target.files[0]; if (!file) return;
+        targetCropType = type;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = document.getElementById('crop-img');
+            img.src = e.target.result;
+            img.onload = () => {
+                cropState = { active: false, x: 0, y: 0, scale: 1, lastX: 0, lastY: 0 };
+                document.getElementById('crop-zoom').value = 1;
+                applyCropTransform();
+                document.getElementById('modal-crop').style.display = 'block';
+                document.getElementById('overlay').style.display = 'block';
+            };
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function startDraggingCrop(e) {
+        cropState.active = true;
+        cropState.lastX = e.clientX - cropState.x;
+        cropState.lastY = e.clientY - cropState.y;
+        document.addEventListener('pointermove', moveDraggingCrop);
+        document.addEventListener('pointerup', stopDraggingCrop);
+        e.preventDefault();
+    }
+
+    function moveDraggingCrop(e) {
+        if (!cropState.active) return;
+        cropState.x = e.clientX - cropState.lastX;
+        cropState.y = e.clientY - cropState.lastY;
+        applyCropTransform();
+    }
+
+    function stopDraggingCrop() {
+        cropState.active = false;
+        document.removeEventListener('pointermove', moveDraggingCrop);
+        document.removeEventListener('pointerup', stopDraggingCrop);
+    }
+
+    function applyCropTransform() {
+        cropState.scale = document.getElementById('crop-zoom').value;
+        document.getElementById('crop-img').style.transform = `translate(${cropState.x}px, ${cropState.y}px) scale(${cropState.scale})`;
+    }
+
+    function finishCrop() {
+        const canvas = document.createElement('canvas'); canvas.width = 300; canvas.height = 300;
+        const ctx = canvas.getContext('2d');
+        const img = document.getElementById('crop-img');
+        const ratio = 300 / 180;
+        const offset = (250 - 180) / 2;
+        ctx.drawImage(img, (cropState.x - offset) * ratio, (cropState.y - offset) * ratio, img.width * cropState.scale * ratio, img.height * cropState.scale * ratio);
+        const b64 = canvas.toDataURL('image/jpeg', 0.8);
+        const node = findNode(familyData, activeId);
+        if (targetCropType === 'member') {
+            node.img = b64; document.getElementById('preview-img').src = b64;
         } else {
-            await fetchFromGitHub();
+            node.spouses[targetCropType].img = b64; refreshSpouseUI(node);
         }
+        closeCrop();
     }
 
-    async function fetchFromGitHub() {
-        try {
-            const response = await fetch(GITHUB_JSON_URL);
-            familyData = await response.json();
+    // --- FULL VIEW LOGIC (FIXED) ---
+    function openFullView(src) {
+        if (!src || src.includes('placeholder')) return;
+        document.getElementById('full-img-src').src = src;
+        document.getElementById('full-photo-view').style.display = 'flex';
+    }
+    function closeFullView() { document.getElementById('full-photo-view').style.display = 'none'; }
+
+    // --- DATA & RENDER ---
+    async function initData() {
+        const local = localStorage.getItem('giapha_v7_fixed');
+        if (local) { familyData = JSON.parse(local); render(); }
+        else {
+            familyData = { id: "root", name: "Cụ Tổ", gender: "male", info: "Đời 1", img: "", spouses: [], children: [] };
             render();
-        } catch (err) {
-            familyData = { id: "root", name: "Cụ Tổ", gender: "male", info: "Đời 1", spouses: [], children: [] };
-            render();
         }
-    }
-
-    function resetAndReload() {
-        if(confirm("Tải lại bản gốc từ GitHub? Mọi chỉnh sửa chưa lưu sẽ mất.")) {
-            localStorage.removeItem(LOCAL_STORAGE_KEY);
-            location.reload();
-        }
-    }
-
-    function findNode(root, id) {
-        if (root.id === id) return root;
-        if (root.children) {
-            for (let child of root.children) {
-                let found = findNode(child, id);
-                if (found) return found;
-            }
-        }
-        return null;
     }
 
     function render() {
-        const container = document.getElementById('tree-container');
-        container.innerHTML = "";
-        const ul = document.createElement('ul');
-        ul.appendChild(createLi(familyData));
+        const container = document.getElementById('tree-container'); container.innerHTML = "";
+        const ul = document.createElement('ul'); ul.appendChild(createLi(familyData));
         container.appendChild(ul);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(familyData, null, 2));
+        localStorage.setItem('giapha_v7_fixed', JSON.stringify(familyData));
     }
 
     function createLi(node) {
         const li = document.createElement('li');
-        const card = document.createElement('div');
-        // Áp dụng class theo giới tính
-        card.className = `node-card ${node.gender || 'male'}`;
-        
-        let spousesHtml = (node.spouses || []).map(s => `<div class="spouse-box">💍 ${s.name}</div>`).join('');
-        card.innerHTML = `<span class="name">${node.name}</span><span class="info">${node.info}</span>${spousesHtml}`;
-        card.onclick = () => openModal(node.id);
-        
+        const card = document.createElement('div'); card.className = `node-card ${node.gender || 'male'}`;
+        const sHtml = (node.spouses || []).map(s => `<div class="spouse-item"><img src="${s.img || 'https://via.placeholder.com/30'}" class="spouse-avatar"><span>${s.name}</span></div>`).join('');
+        card.innerHTML = `<img src="${node.img || 'https://via.placeholder.com/60'}" class="avatar"><span class="name">${node.name}</span><span style="font-size:10px">${node.info}</span>${sHtml}`;
+        card.onclick = (e) => { e.stopPropagation(); openEditModal(node.id); };
         li.appendChild(card);
-        if (node.children && node.children.length > 0) {
-            const ul = document.createElement('ul');
-            node.children.forEach(c => ul.appendChild(createLi(c)));
+        if (node.children?.length) {
+            const ul = document.createElement('ul'); node.children.forEach(c => ul.appendChild(createLi(c)));
             li.appendChild(ul);
         }
         return li;
     }
 
-    function openModal(id) {
-        activeId = id;
-        const node = findNode(familyData, id);
+    function openEditModal(id) {
+        activeId = id; const node = findNode(familyData, id);
         document.getElementById('m-name').value = node.name;
         document.getElementById('m-info').value = node.info;
         document.getElementById('m-gender').value = node.gender || 'male';
-        document.getElementById('del-btn').style.display = (id === 'root') ? 'none' : 'block';
+        document.getElementById('preview-img').src = node.img || 'https://via.placeholder.com/80';
         refreshSpouseUI(node);
-        document.getElementById('modal').style.display = 'block';
+        document.getElementById('modal-edit').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
     }
 
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
-    }
-
     function refreshSpouseUI(node) {
-        const list = document.getElementById('spouse-list-ui');
-        list.innerHTML = "";
+        const list = document.getElementById('spouse-list-ui'); list.innerHTML = "";
         (node.spouses || []).forEach((s, i) => {
-            list.innerHTML += `<div style="display:flex; justify-content:space-between; background:#eee; padding:3px; margin:2px 0; font-size:0.75em">
-                <span>${s.name}</span><button onclick="removeSpouse(${i})" style="background:red; color:white; border:none; padding:0 5px">X</button>
-            </div>`;
+            const d = document.createElement('div');
+            d.style = "display:flex; align-items:center; gap:8px; background:#f9fafb; padding:5px; margin-bottom:5px; border-radius:4px; font-size:12px;";
+            d.innerHTML = `<img src="${s.img || 'https://via.placeholder.com/30'}" style="width:30px; height:30px; border-radius:50%; cursor:pointer" onclick="openFullView(this.src)">
+                           <span style="flex:1">${s.name}</span>
+                           <button onclick="changeSpousePhoto(${i})" style="background:#3b82f6; padding:3px 6px; font-size:10px">Ảnh</button>
+                           <button onclick="removeSpouse(${i})" style="background:#ef4444; padding:3px 6px; font-size:10px">X</button>`;
+            list.appendChild(d);
         });
     }
 
-    function addSpouseAction() {
-        const val = document.getElementById('new-spouse-name').value;
-        if(!val) return;
-        const node = findNode(familyData, activeId);
-        if(!node.spouses) node.spouses = [];
-        node.spouses.push({ name: val });
-        document.getElementById('new-spouse-name').value = "";
-        refreshSpouseUI(node);
+    function changeSpousePhoto(idx) {
+        const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+        inp.onchange = (e) => initCropProcess(e, idx); inp.click();
     }
 
-    function removeSpouse(index) {
-        findNode(familyData, activeId).spouses.splice(index, 1);
-        refreshSpouseUI(findNode(familyData, activeId));
-    }
-
-    function addChildAction() {
-        const node = findNode(familyData, activeId);
-        if(!node.children) node.children = [];
-        node.children.push({ 
-            id: "id_" + Date.now(), 
-            name: "Người mới", 
-            gender: "male", 
-            info: "", 
-            spouses: [], 
-            children: [] 
-        });
-        saveChanges();
-    }
-
-    function saveChanges() {
-        const node = findNode(familyData, activeId);
-        node.name = document.getElementById('m-name').value;
-        node.info = document.getElementById('m-info').value;
-        node.gender = document.getElementById('m-gender').value;
-        render(); closeModal();
-    }
-
-    function deleteNodeAction() {
-        if(!confirm("Xóa người này?")) return;
-        const rm = (p, id) => {
-            if(!p.children) return false;
-            const idx = p.children.findIndex(c => c.id === id);
-            if(idx !== -1) { p.children.splice(idx, 1); return true; }
-            for(let c of p.children) if(rm(c, id)) return true;
-            return false;
-        };
-        rm(familyData, activeId); render(); closeModal();
-    }
-
-    function exportToJson() {
-        const dataStr = JSON.stringify(familyData, null, 2);
-        const dataUri = "data:text/json;charset=utf-8," + encodeURIComponent(dataStr);
-        const dl = document.createElement('a');
-        dl.setAttribute("href", dataUri);
-        dl.setAttribute("download", "GiaPha.json");
-        dl.click();
-    }
-
-    function importFromJson(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (ev) => { 
-            familyData = JSON.parse(ev.target.result); 
-            render(); 
-        };
-        reader.readAsText(file);
-    }
+    function findNode(root, id) { if (root.id === id) return root; if (root.children) { for (let c of root.children) { let f = findNode(c, id); if (f) return f; } } return null; }
+    function closeAllModals() { document.querySelectorAll('.modal-box, #full-photo-view').forEach(m => m.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
+    function closeCrop() { document.getElementById('modal-crop').style.display = 'none'; }
+    function addSpouseAction() { const n = document.getElementById('new-spouse-name').value; if (!n) return; const node = findNode(familyData, activeId); node.spouses.push({ name: n, img: "" }); document.getElementById('new-spouse-name').value = ""; refreshSpouseUI(node); }
+    function removeSpouse(idx) { findNode(familyData, activeId).spouses.splice(idx, 1); refreshSpouseUI(findNode(familyData, activeId)); }
+    function addChildAction() { const node = findNode(familyData, activeId); if (!node.children) node.children = []; node.children.push({ id: "id_"+Date.now(), name: "Người mới", gender: "male", info: "", img: "", spouses: [], children: [] }); saveChanges(); }
+    function deleteNodeAction() { if (activeId === 'root' || !confirm("Xóa người này?")) return; const rm = (p, id) => { if (!p.children) return; const idx = p.children.findIndex(c => c.id === id); if (idx !== -1) p.children.splice(idx, 1); else p.children.forEach(c => rm(c, id)); }; rm(familyData, activeId); render(); closeAllModals(); }
+    function saveChanges() { const node = findNode(familyData, activeId); node.name = document.getElementById('m-name').value; node.info = document.getElementById('m-info').value; node.gender = document.getElementById('m-gender').value; render(); closeAllModals(); }
+    function exportToJson() { const b = new Blob([JSON.stringify(familyData, null, 2)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = "GiaPha.json"; a.click(); }
+    function importFromJson(e) { const r = new FileReader(); r.onload = (ev) => { familyData = JSON.parse(ev.target.result); render(); }; r.readAsText(e.target.files[0]); }
 
     window.onload = initData;
 </script>
