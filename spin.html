@@ -89,7 +89,7 @@ async function spinFromRemote(type) {
         const text = await res.text();
         const spun = spinText(text.trim());
 
-        output.textContent = spun;
+        output.value = spun;
         status.textContent = "Spin thành công (" + fileName + ")";
     } catch (err) {
         status.textContent = "Lỗi: không thể tải nội dung";
